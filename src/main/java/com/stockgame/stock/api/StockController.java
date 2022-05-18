@@ -8,34 +8,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.stockgame.stock.service.StockService;
 import com.stockgame.stock.model.Stock;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 
 //hellos
-@RequestMapping("/stock")
-@RestController
+@Controller
 public class StockController {
-    
-    private StockService stockService;
 
-    @Autowired
-    public StockController(StockService stockService){
-        this.stockService = stockService;
-    }
-
-    @PostMapping("/buy")
-    public void buyStock(@RequestBody Stock stock){
-        stockService.buyStock(stock);
-    }
-
-    @PostMapping("/sell")
-    public void sellStock(@RequestBody Stock stock){
-        stockService.sellStock(stock);
-    }
-
-    @GetMapping
-    public ArrayList<Stock> seeStocks(){
-        return stockService.seeStocks();
+    @RequestMapping("/index")
+    public String index(Model model) {
+        model.addAttribute("name", "ahmed123456");
+        model.addAttribute("age", "22");
+        return "index";
     }
 
 }
