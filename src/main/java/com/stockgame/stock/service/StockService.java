@@ -1,31 +1,66 @@
 package com.stockgame.stock.service;
 
-import com.stockgame.stock.dao.StockDao;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Hashtable;
 
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.stockgame.stock.model.DesiredStock;
+import com.stockgame.stock.model.Trade;
+import com.stockgame.stock.model.User;
+import com.stockgame.stock.repository.UserRepository;
+
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import com.stockgame.stock.model.Stock;
 
 @Service
 public class StockService {
     
-    private StockDao stockDao;
+    private UserRepository userRepo;
 
-    public StockService(@Qualifier("StockDao") StockDao stockDao){
-        this.stockDao = stockDao;
+    public StockService(UserRepository userRepo){
+        this.userRepo = userRepo;
     }
 
-    public int buyStock(Stock stock){
-        return stockDao.buyStock(stock);
+    public String getStockPrice(String ticker) throws IOException{
+        DesiredStock stock = new DesiredStock(ticker);
+        try{
+            return stock.getPrice().toString();
+        }
+        catch(Exception e){
+            return "Invalid Stock";
+        }
     }
 
-    public int sellStock(Stock stock){
-        return stockDao.sellStock(stock);
+    public String makeTrade(String ticker, int numShares, String id) throws IOException{
+        Date date = new Date();
+        Timestamp time = new Timestamp(date.getTime());
+        User user = userRepo.findUserByID("01");
+        Double price = Double.parseDouble(getStockPrice(ticker));
+        Trade trade = new Trade(user.getID(), ticker, time, price, numShares);
+        Double totalPrice = trade.getTotalPrice();
+        if(numShares > 0){
+            if(user.getCashBalance() < totalPrice){
+                return "Invalid funds!";
+            }
+            //This will also add the trade to database
+            user.executeTrade(trade);
+            userRepo.save(user);
+            return "Successfully bought " + ticker + " @ " + time +". New balance: " + user.getCashBalance();
+        }
+        else{
+            Hashtable<String, Integer> portfolio = user.getPortfolioStocks();
+            System.out.println(portfolio.get(ticker));
+            System.out.println(Math.abs(numShares));
+            if(!portfolio.containsKey(ticker) || portfolio.get(ticker) < Math.abs(numShares)){
+                return "Not enough shares owned!";
+            }
+            user.executeTrade(trade);
+            userRepo.save(user);
+            return "Successfully sold" + ticker + " @ " + time +". New balance: " + user.getCashBalance();
+        }
     }
 
-    public ArrayList<Stock> seeStocks(){
-        return stockDao.seeStocks();
+    public Hashtable<String, Integer> getPortfolio(String id){
+        return userRepo.findUserByID(id).getPortfolioStocks();
     }
 }

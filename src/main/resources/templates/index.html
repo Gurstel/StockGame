@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+  <head>
+    <meta charset="ISO-8859-1" />
+    <title>Spring Boot Application</title>
+    <link href="css/styles.css" rel="stylesheet" />
+  </head>
+  <body>
+
+    <form method="POST" action="/index">
+        <input type="text" name="ticker" placeholder = "Search for a stock"></input>
+        <button type="submit">Submit</button>
+
+        <input type="text" name="numSharesBought" placeholder = "Number of shares to purchase"></input>
+        <button type="submit">Buy</button>
+
+        <input type="text" name="numSharesSold" placeholder = "Number of shares to sell"></input>
+        <button type="submit">Sell</button>
+    </form>
+
+    <h4 th:text="'Current Price of ' + ${stockName} + ': ' + ${stockPrice}"></h4>
+    <h4 th:text="'Current Balance: $' + ${userBalance}"></h4>
+    <h4 th:text="'Current number of shares owned: ' + ${numSharesOwned}"></h4>
+    <h4 th:text="'Portfolio: ' + ${portfolio}"></h4>
+
+  </body>
+</html>
