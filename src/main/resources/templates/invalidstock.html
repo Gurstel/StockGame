@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+  <head>
+    <meta charset="ISO-8859-1" />
+    <title>Spring Boot Application</title>
+    <link href="css/styles.css" rel="stylesheet" />
+  </head>
+  <body>
+
+    <form method="POST" action="/index">
+        <button type="submit">Go Home</button>
+    </form>
+
+    <h4 th:text="'This stock does not exist, please go home.'"></h4>
+
+  </body>
+</html>

@@ -23,12 +23,9 @@ public class StockService {
 
     public String getStockPrice(String ticker) throws IOException{
         DesiredStock stock = new DesiredStock(ticker);
-        try{
-            return stock.getPrice().toString();
-        }
-        catch(Exception e){
-            return "Invalid Stock";
-        }
+        
+        return stock.getPrice().toString();
+        
     }
 
     public String makeTrade(String ticker, int numShares, String id) throws IOException{

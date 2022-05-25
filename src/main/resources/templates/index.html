@@ -7,21 +7,30 @@
   </head>
   <body>
 
-    <form method="POST" action="/index">
+    <form method="POST" action="/stock">
         <input type="text" name="ticker" placeholder = "Search for a stock"></input>
         <button type="submit">Submit</button>
-
-        <input type="text" name="numSharesBought" placeholder = "Number of shares to purchase"></input>
-        <button type="submit">Buy</button>
-
-        <input type="text" name="numSharesSold" placeholder = "Number of shares to sell"></input>
-        <button type="submit">Sell</button>
     </form>
 
-    <h4 th:text="'Current Price of ' + ${stockName} + ': ' + ${stockPrice}"></h4>
+    <h4 th:text="'Total account worth: ' + ${userAccountWorth}"></h4>
     <h4 th:text="'Current Balance: $' + ${userBalance}"></h4>
-    <h4 th:text="'Current number of shares owned: ' + ${numSharesOwned}"></h4>
-    <h4 th:text="'Portfolio: ' + ${portfolio}"></h4>
+
+    <table>
+      <thead>
+          <tr>
+              <th> Stocks </th>
+              <th> Amount </th>
+              <th> Current Price </th>
+              <th> Total Equity </th>
+          </tr>
+      </thead>
+      <tbody>
+        <tr th:each="stock : ${portfolio}">
+          <td th:text="${stock.key}">stockName</td>
+          <td th:text="${stock.value}">numOwned</td>
+        </tr>
+      </tbody>
+    </table>
 
   </body>
 </html>
