@@ -1,6 +1,5 @@
 package com.stockgame.stock;
 
-import com.stockgame.stock.model.User;
 import com.stockgame.stock.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,7 @@ public class StockApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		User user = userRepo.findUserByID("01");
-		System.out.print(user.getID());
+		userRepo.findUserByID("01");
 		
 	}
 }

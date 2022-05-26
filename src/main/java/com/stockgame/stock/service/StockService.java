@@ -1,8 +1,8 @@
 package com.stockgame.stock.service;
 
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.Date;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Hashtable;
 
 import com.stockgame.stock.model.DesiredStock;
@@ -21,28 +21,24 @@ public class StockService {
         this.userRepo = userRepo;
     }
 
-    public String getStockPrice(String ticker) throws IOException{
+    public BigDecimal getStockPrice(String ticker) throws IOException{
         DesiredStock stock = new DesiredStock(ticker);
-        
-        return stock.getPrice().toString();
+        return stock.getPrice().setScale(2, RoundingMode.HALF_UP);
         
     }
 
     public String makeTrade(String ticker, int numShares, String id) throws IOException{
-        Date date = new Date();
-        Timestamp time = new Timestamp(date.getTime());
         User user = userRepo.findUserByID("01");
-        Double price = Double.parseDouble(getStockPrice(ticker));
-        Trade trade = new Trade(user.getID(), ticker, time, price, numShares);
-        Double totalPrice = trade.getTotalPrice();
+        BigDecimal price = getStockPrice(ticker);
+        Trade trade = new Trade(ticker, price, numShares);
+        Double totalPrice = Double.parseDouble(trade.getTotalPrice().toString());
         if(numShares > 0){
             if(user.getCashBalance() < totalPrice){
                 return "Invalid funds!";
             }
-            //This will also add the trade to database
             user.executeTrade(trade);
             userRepo.save(user);
-            return "Successfully bought " + ticker + " @ " + time +". New balance: " + user.getCashBalance();
+            return "Successfully bought " + ticker + ". New balance: " + user.getCashBalance();
         }
         else{
             Hashtable<String, Integer> portfolio = user.getPortfolioStocks();
@@ -53,7 +49,7 @@ public class StockService {
             }
             user.executeTrade(trade);
             userRepo.save(user);
-            return "Successfully sold" + ticker + " @ " + time +". New balance: " + user.getCashBalance();
+            return "Successfully sold" + ticker + ". New balance: " + user.getCashBalance();
         }
     }
 

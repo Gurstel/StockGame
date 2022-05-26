@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+  <head>
+    <meta charset="ISO-8859-1" />
+    <title>Spring Boot Application</title>
+    <link href="css/styles.css" rel="stylesheet" />
+  </head>
+  <body>
+
+    <form method="POST" action="/index">
+        <button type="submit">Go Home</button>
+    </form>
+
+    <form method="POST" action="/stock">
+      <input type="hidden" name="ticker" th:value="${ticker}"/>
+      <button type="submit">Go back to stock</button>
+    </form>
+
+    <h4 th:text="${error}"></h4>
+
+  </body>
+</html>

@@ -12,24 +12,13 @@ public class User {
 
     private String name;
     private Double cashBalance;
-    private List<String> tradeHistory;
     private Hashtable<String, Integer> portfolioStocks;
 
     public User(String ID, String name, Double cashBalance){
         this.ID = ID;
         this.name = name;
         this.cashBalance = cashBalance;
-        this.tradeHistory = new ArrayList<String>();
         this.portfolioStocks = new Hashtable<String, Integer>();
-    }
-
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Hashtable<String, Integer> getPortfolioStocks(){
@@ -65,7 +54,7 @@ public class User {
             newNumShares = sharesTraded;
         }
 
-        Double totalPriceOfTrade = trade.getTotalPrice();
+        Double totalPriceOfTrade = Double.parseDouble(trade.getTotalPrice().toString());
 
         if(sharesTraded > 0){
             if(currentNumShares != null){
@@ -75,7 +64,6 @@ public class User {
                 portfolioStocks.put(ticker, sharesTraded);
             }
             setCashBalance(getCashBalance() - totalPriceOfTrade);
-            tradeHistory.add("Bought " + sharesTraded + " of $" + ticker + " shares.");
         }
         else{
             portfolioStocks.replace(ticker, newNumShares);
@@ -85,7 +73,6 @@ public class User {
             }
 
             setCashBalance(getCashBalance() + totalPriceOfTrade);
-            tradeHistory.add("Sold " + trade.getSharesTraded() + " of $" + trade.getTicker() + " shares.");
         }
     }
 }

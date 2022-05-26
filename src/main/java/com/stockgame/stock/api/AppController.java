@@ -1,19 +1,15 @@
 package com.stockgame.stock.api;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+
 import com.stockgame.stock.service.StockService;
 import com.stockgame.stock.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
-import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class AppController {
@@ -30,8 +26,8 @@ public class AppController {
     @RequestMapping(value = {"/index", "/"})
     public String index(Model model) throws IOException{
         model.addAttribute("userBalance", userService.getUserBalance());
-        model.addAttribute("portfolio", userService.getUserPortfolio());
         model.addAttribute("userAccountWorth", userService.getUserAccountWorth());
+        model.addAttribute("portfolioData", userService.getPortfolioData());
 
         return "index";
     }
@@ -51,7 +47,7 @@ public class AppController {
             }
         }
         catch(Exception e){
-            return "invalidstock";
+            return "invalid-stock";
         }
 
         return "stock";
@@ -62,13 +58,39 @@ public class AppController {
         String ticker = request.getParameter("ticker");
         String purchased = request.getParameter("purchased");
         String sold = request.getParameter("sold");
+        String purchaseCheck = "";
+        String sellCheck = "";
+
+        model.addAttribute("ticker", ticker);
 
         if(!(purchased == null) && !purchased.isEmpty()){
-            stockService.makeTrade(ticker, Integer.parseInt(purchased), "01");
+            try{
+                purchaseCheck = stockService.makeTrade(ticker, Integer.parseInt(purchased), "01");
+            }
+            catch(Exception e){
+                model.addAttribute("error", "You must buy whole stock. Please make sure to type a whole number.");
+                return "trade-error";
+            }
         }
 
         if(!(sold == null) && !sold.isEmpty()){
-            stockService.makeTrade(ticker, -1*Integer.parseInt(sold), "01");
+            try{
+                sellCheck = stockService.makeTrade(ticker, -1*Integer.parseInt(sold), "01");
+            }
+            catch(Exception e){
+                model.addAttribute("error", "You must sell whole stock. Please make sure to type a whole number.");
+                return "trade-error";
+            }
+        }
+
+        if(purchaseCheck == "Invalid funds!"){
+            model.addAttribute("error", "Invalid funds!");
+            return "trade-error";
+        }
+
+        if(sellCheck == "Not enough shares owned!"){
+            model.addAttribute("error", "Not enough shares owned!");
+            return "trade-error";
         }
 
         return "redirect:/index";
