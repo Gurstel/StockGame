@@ -12,6 +12,15 @@ import com.stockgame.stock.repository.UserRepository;
 
 import org.springframework.stereotype.Service;
 
+/*
+StockService is where all of the stock business logic occurs. It is the intermediate
+step between the Controller and database/models. StockService creates a 
+database as private data to access users that need modification.
+
+This class can get prices of stocks and make trades (while making sure the trade is
+actually viable).
+*/
+
 @Service
 public class StockService {
     
@@ -23,8 +32,7 @@ public class StockService {
 
     public BigDecimal getStockPrice(String ticker) throws IOException{
         DesiredStock stock = new DesiredStock(ticker);
-        return stock.getPrice().setScale(2, RoundingMode.HALF_UP);
-        
+        return stock.getPrice();
     }
 
     public String makeTrade(String ticker, int numShares, String id) throws IOException{
@@ -51,9 +59,5 @@ public class StockService {
             userRepo.save(user);
             return "Successfully sold" + ticker + ". New balance: " + user.getCashBalance();
         }
-    }
-
-    public Hashtable<String, Integer> getPortfolio(String id){
-        return userRepo.findUserByID(id).getPortfolioStocks();
     }
 }

@@ -3,20 +3,6 @@ This project is intended to be a stock-market simulation, using real life prices
 
 SpringBoot is utilized to create the application, MongoDB for the database, and ThymeLeaf for the HTML templatting.
 
-To run this application:
-
-install HomeBrew (Paste command below in a macOS Terminal or Linux shell prompt.):
-```
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-install MongoDB
-```
-brew install mongodb-community@5.0
-```
-
-
-
 
 Sources and citing:
 

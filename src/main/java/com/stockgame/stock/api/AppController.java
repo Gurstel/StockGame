@@ -11,6 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/*
+Controller for displaying HTML files based on client-side operations, including form
+submissions, as well as simply taking them to the home page
+*/
 @Controller
 public class AppController {
 

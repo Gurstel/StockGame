@@ -11,6 +11,14 @@ import com.stockgame.stock.repository.UserRepository;
 
 import org.springframework.stereotype.Service;
 
+
+/*
+UserService is where user buisness logic occurs. It has to connect to the
+user repository(database) and stockService in order to actually manipulate the User
+objects. This class can get the portfolio, create a hashmap that has more attributes
+to add to the portfolio, get the total worth of a user's account, and get
+the cash balance a user has.
+*/
 @Service
 public class UserService {
     

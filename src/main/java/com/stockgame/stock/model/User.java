@@ -4,6 +4,14 @@ import java.util.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/*
+Model for a User obejct. A user consists of an ID, name, cash balance, and portfolio
+A User can also execute a trade. Executing a trade will see if it is a purchase or sell
+and then change the cash balance and portfolio for the user. 
+
+This object is what gets stored in the database, so modyfing a user by executing a trade
+will also modify the user in the database.
+*/
 @Document("Users")
 public class User {
 
@@ -27,10 +35,6 @@ public class User {
 
     public String getID() {
         return this.ID;
-    }
-
-    public void setID(String id) {
-        this.ID = id;
     }
 
     public Double getCashBalance(){
