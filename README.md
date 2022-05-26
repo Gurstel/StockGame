@@ -21,6 +21,7 @@ brew install mongodb-community@5.0
 Sources and citing:
 
 #To learn/debug# (This is most of what I used when reading up on Spring, MongoDB, and Thymeleaf... included in this is also forums for debugging purposes)
+
 https://spring.io/guides
 https://www.youtube.com/watch?v=9SGDpanrc8U
 https://www.baeldung.com/spring-data-jdbc-intro
